@@ -12,7 +12,7 @@ function dummy(config){
 	var dummy = {};
 
 	function setup(cb){
-		cb(null,update);
+		cb(null,_.assign(config_vars, JSON.parse(config)));
 	}
 
 	function destroy(){
