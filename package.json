@@ -1,0 +1,27 @@
+{
+  "name": "dummy-data",
+  "version": "0.0.1",
+  "description": "dummy data for anything",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gajjargaurav/dummy-data.git"
+  },
+  "keywords": [
+    "dummy-data",
+    "DUMMY-DATA",
+    "Dummy-Data"
+  ],
+  "author": "gajjargaurav kamrankhan54",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gajjargaurav/dummy-data/issues"
+  },
+  "homepage": "https://github.com/gajjargaurav/dummy-data",
+  "dependencies": {
+    "lodash": "^3.0.1"
+  }
+}
