@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/gajjargaurav/dummy-data",
   "dependencies": {
-    "lodash": "^3.0.1"
+    "lodash": "^3.0.1",
+    "mongodb": "^1.4.29"
   }
 }
