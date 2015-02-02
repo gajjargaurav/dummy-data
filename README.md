@@ -5,7 +5,7 @@ A simple module for mongo to allow dummy data setup and teardown for tests
 
 ## Installation
 
-  npm install dummydata --save
+  `npm install dummydata --save`
 
 
 ## Usage
