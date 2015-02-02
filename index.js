@@ -10,6 +10,7 @@ var config_vars = {
 	"datadir": "test_data/"
 }
 
+// Really bad function, fix this asap
 function createCollection(db,cb){
 	var fs = require('fs');
 	var root = path.join( __dirname,config_vars.datadir);
@@ -18,8 +19,7 @@ function createCollection(db,cb){
 		files.forEach(function(file){
 			fs.readFile(root+file,'utf8', function(err, data){
 				if(err) return console.error(err);
-				var j = JSON.parse(data);
-				_.forEach(j,function(n,key){
+				_.forEach(JSON.parse(data),function(n,key){
 				 	db.createCollection(key, function(err, collection){
 				 		collection.insert(n, function(err, res){
 							if(err) {return console.error(err);}
@@ -51,7 +51,10 @@ function dummy(config){
 	function destroy(db, cb){
 		db.dropDatabase();
 		db.close();
-		return cb();
+		
+		if(cb){
+			return cb();
+		}
 	}
 
 	dummy = {

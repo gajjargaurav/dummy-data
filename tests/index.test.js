@@ -1,62 +1,38 @@
 var tape = require('tape');
 var Dummy = require('../');
 
-tape.skip('no config provided', function(t){
-	t.plan(1);
-	var config = {databaseName:'testing_data'};
-	t.throws(new Dummy(config));
-});
+var config = {databaseName: 'testing_data'};
 
 tape.skip('wrong config provided', function(t){
-	t.plan(1);
-	var config = {databaseName:'testing_data'};
-	t.doesNotThrow(new Dummy(config));
+	t.plan(1);	
+	t.throws(new Dummy(config)); //, 'throws SyntaxError');
 });
 
-tape('no databaseName provided', function(t){
+tape('no config provided', function(t){
 	t.plan(1);
-	var dummy = new Dummy();
-	dummy.setup(function(err, db){
-		if (err) { return console.error(err); }
-		t.equal(db.databaseName, 'test_data', 'returned db using default vars');
-		db.close();
-	});
+	t.ok(new Dummy(), 'creates dummy');
 });
 
-tape('databaseName provided', function(t){
+tape('correct config provided', function(t){
 	t.plan(1);
-	var config = JSON.stringify({databaseName:'testing_data'});
-	var dummy = new Dummy(config);
-	dummy.setup(function(err, db){
-		if (err) { return console.error(err); }
-		t.equal(db.databaseName, 'testing_data', 'returned db using default vars');
-		db.close();
-	});
+	t.ok(new Dummy(JSON.stringify(config)), 'creates dummy');
 });
 
-tape('read datafiles and create collections', function(t){
-	t.plan(1);
-	var config = JSON.stringify({databaseName:'testing_data'});
-	var dummy = new Dummy(config);
-	dummy.setup(function(err, db){
+tape('setup', function (test){
+	
+	var dummy = new Dummy(JSON.stringify(config));
+	
+	dummy.setup(function (err, db){
 		if (err) { return console.error(err); }
-		db.collection('system.namespaces')
-			.find({ name: 'testing_data.users'}).toArray(function(err, docs) {
-				if (err) { return console.error(err); }
-				t.equals(docs.length, 1, 'users' + '...!');
-				db.close();
-		});
-	});
-});
+		test.plan(2);
+		test.ok(db.databaseName, config.databaseName, 'database created');
 
-tape('destroy', function(t){
-	t.plan(1);
-	var config = JSON.stringify({databaseName:'testing_data'});
-	var dummy = new Dummy(config);
-	dummy.setup(function(err, db){
-		if (err) { return console.error(err); }
-		dummy.destroy(db, function(err){
-			t.error(err, 'database destroyed');
+		test.test('destroy', function(t){
+			t.plan(1);
+			dummy.destroy(db, function(err){
+				t.error(err, 'database destroyed');
+				t.end();
+			});
 		});
 	});
 });
