@@ -4,7 +4,7 @@
   "description": "dummy data for anything",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run tape tests/*.test.js "
   },
   "repository": {
     "type": "git",
@@ -24,5 +24,8 @@
   "dependencies": {
     "lodash": "^3.0.1",
     "mongodb": "^1.4.29"
+  },
+  "devDependencies": {
+    "tape": "^3.5.0"
   }
 }

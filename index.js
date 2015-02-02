@@ -1,27 +1,57 @@
 'use strict'
 var fs = require('fs');
 var _ = require('lodash');
+var path = require('path');
 var mongo = require('mongodb').MongoClient;
 
 var config_vars = {
 	"connectionUrl": "mongodb://127.0.0.1:27017/",
-	"datadir": "/test_data"
+	"databaseName": 'test_data',
+	"datadir": "test_data/"
+}
+
+function createCollection(db,cb){
+	var fs = require('fs');
+	var root = path.join( __dirname,config_vars.datadir);
+	fs.readdir(root,function(err,files){
+		if(err) console.error(err);
+		files.forEach(function(file){
+			fs.readFile(root+file,'utf8', function(err, data){
+				if(err) return console.error(err);
+				var j = JSON.parse(data);
+				_.forEach(j,function(n,key){
+				 	db.createCollection(key, function(err, collection){
+				 		collection.insert(n, function(err, res){
+							if(err) {return console.error(err);}
+							return cb(null, db);
+						});
+					});
+				});
+			});
+		});
+	});
 }
 
 function dummy(config){
 	var dummy = {};
-	config_vars = _.assign(config_vars, JSON.parse(config));
+	if(config)
+	{
+		config_vars = _.assign(config_vars, JSON.parse(config));
+	}
 	
 	function setup(cb){
-		mongo.connect(config_vars.connectionUrl, function(err, db){
+		mongo.connect(config_vars.connectionUrl + config_vars.databaseName, function(err, db){
 			if (err) { return console.error(err); }
-			cb(null,db);
-			db.close();	
+			createCollection(db, function(err, db){
+				cb(null,db);
+			});
 		});
 	}
 
-	function destroy(){
-
+	function destroy(db, cb){
+		db.dropDatabase();
+		db.close();
+		return cb();
 	}
 
 	dummy = {
@@ -32,4 +62,4 @@ function dummy(config){
 	return dummy;
 }
 
-module.exports.dummy = dummy;
+module.exports = dummy;
