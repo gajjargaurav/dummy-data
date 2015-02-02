@@ -32,7 +32,7 @@ dummy.setup(function(err, dummydb){
 ```
 
 ## Tests
-   npm test
+   `npm test`
 
 ## License
 Copyright (c) 2015 Gaurav Gajjar  
