@@ -1,1 +1,2 @@
-{"users":[{ "firstname": "James", "lastname":"Cameron", "email":"james@cameron.com"}]}
+{"users":[{ "firstname": "James", "lastname":"Cameron", "email":"james@cameron.com"},
+{ "firstname": "James1", "lastname":"Cameron", "email":"james1@cameron.com"}]}

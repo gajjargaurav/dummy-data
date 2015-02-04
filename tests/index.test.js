@@ -2,7 +2,7 @@ var tape = require('tape');
 var Dummy = require('../');
 var mongo = require('mongodb').MongoClient
 
-var config = {databaseName: 'testing_data'};
+var config = {databaseName: 'testing_data', datadir: 'test_data/'};
 
 tape.skip('wrong config provided', function(t){
 	t.plan(1);	
@@ -39,9 +39,9 @@ tape('setup', function (test){
 		if (err) { return console.error(err); }
 		test.plan(2);
 		test.ok(db.databaseName, config.databaseName, 'database created');
-		test.test('close', function(t){
+		test.test('destroy', function(t){
 			t.plan(1);
-			dummy.destroy(db ,function(err){
+			dummy.close(db ,function(err){
 				t.error(err, 'database destroyed');
 				t.end();
 			});
