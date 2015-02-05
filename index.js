@@ -4,7 +4,7 @@ var _ = require('lodash');
 var async = require('async');
 var path = require('path');
 var mongo = require('mongodb').MongoClient;
-var Reader = require('./lib/reader');
+var reader = require('./lib/reader');
 
 var defaults = {
 	'connectionUrl': 'mongodb://127.0.0.1:27017/',
@@ -13,52 +13,59 @@ var defaults = {
 }
 
 function processData(db, data, cb){
-	//console.log(data);
-	async.map(data, function(item,done){
-		_.forEach(item, function(documents,collection){
-			db.createCollection(collection, function(err, collection){
-				if(err) cb(err);
-				collection.insert(documents, function(err, res){
-					cb(err, db);
+	async.map(data, function(item, done){
+		_.forEach(item,function(n,key){
+				 	db.createCollection(key, function(err, collection){
+				 		collection.insert(n, function(err, res){
+							if(err) {return console.error(err);}
+							return done(null, db);
+						});
+					});
 				});
-			});		
-		})
-	}, cb)
-	// _.forEach(data,function(n,key){		
-	// 	console.log(n, key);
-	// 	db.createCollection(key, function(err, collection){
-	// 		if(err) cb(err);
-	// 		collection.insert(n, function(err, res){
-	// 			cb(err, db);
-	// 		});
-	// 	});
-	// });
+	}, function(err, result){
+		if(err) cb(err);
+		cb(null, db);
+	});
+	// async.map(data, function(item,done){
+	// 	//console.log(item);
+	// 	//console.log('============');
+	// 	_.forEach(item, function(documents,collectionName){
+	// 		//console.log(documents);
+	// 		// console.log(collection);
+	// 		db.createCollection(collectionName, function(err, collection){
+	// 			if(err) cb(err);
+	// 			console.log(collection);
+	// 			// collection.insert(documents, function(err, res){
+	// 			// 	//cb(err, db);
+	// 			// 	if(err) cb(err);
+	// 			// });
+	// 		});		
+	// 	})
+	// }, cb(null, db));
 }
+
+// function process(data, cb){
+// 	async.waterfall([
+// 		function(cb){
+// 			var collections 
+// 			async.map(data, function(item, cb){
+
+// 			})
+// 		},
+// 		])
+// }
+
+// function createCollection(db, collectionName, cb){
+// 	db.createCollection(collectionName, cb);
+// }
+
+// function insertDocuments(db, documents, cb){
+// 	db.insert(documents, cb);
+// }
 
 function readTestData(cb){
 	var testDataDir = path.join( __dirname, defaults.datadir);
-	var reader = new Reader(testDataDir);
-	reader.read(cb);
-	// async.waterfall([
-	// 	function(cb){
-	// 		fs.readdir(testDataDir,cb)		
-	// 	},
-	// 	function(files,cb){
-	// 		async.each(files,cb);
-	// 	},
-	// 	function(file, cb){
-	// 		readFileData(testDataDir + file, cb);
-	// 	}
-	// 	],
-	// 	function(err, result){
-	// 		cb(err,result);
-	// 	})
-	// fs.readdir(testDataDir,function(err,files){
-	// 	if(err) cb(err);
-	// 	files.forEach(function(file){
-	// 			readFileData(testDataDir + file, cb)			
-	// 	});
-	// });
+	reader(testDataDir, cb);
 }
 
 function dummy(config){
@@ -80,9 +87,7 @@ function dummy(config){
 			data: readTestData
 			}, function (err, result){
 				if(err) { return cb(err) }
-				//	console.log(result.db.databaseName);
-				//console.log(JSON.stringify(result.data));
-				//console.log(JSON.stringify(result.data));
+				dummy.data = result.data;	
 				processData(result.db, result.data, cb);
 		});
 	}
