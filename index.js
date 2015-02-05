@@ -12,6 +12,7 @@ var defaults = {
 	'datadir': 'test_data/'
 }
 
+// the only function now to fix
 function processData(db, data, cb){
 	async.map(data, function(item, done){
 		_.forEach(item,function(n,key){
@@ -26,42 +27,7 @@ function processData(db, data, cb){
 		if(err) cb(err);
 		cb(null, db);
 	});
-	// async.map(data, function(item,done){
-	// 	//console.log(item);
-	// 	//console.log('============');
-	// 	_.forEach(item, function(documents,collectionName){
-	// 		//console.log(documents);
-	// 		// console.log(collection);
-	// 		db.createCollection(collectionName, function(err, collection){
-	// 			if(err) cb(err);
-	// 			console.log(collection);
-	// 			// collection.insert(documents, function(err, res){
-	// 			// 	//cb(err, db);
-	// 			// 	if(err) cb(err);
-	// 			// });
-	// 		});		
-	// 	})
-	// }, cb(null, db));
 }
-
-// function process(data, cb){
-// 	async.waterfall([
-// 		function(cb){
-// 			var collections 
-// 			async.map(data, function(item, cb){
-
-// 			})
-// 		},
-// 		])
-// }
-
-// function createCollection(db, collectionName, cb){
-// 	db.createCollection(collectionName, cb);
-// }
-
-// function insertDocuments(db, documents, cb){
-// 	db.insert(documents, cb);
-// }
 
 function readTestData(cb){
 	var testDataDir = path.join( __dirname, defaults.datadir);
