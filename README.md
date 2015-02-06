@@ -1,7 +1,5 @@
-# dummydata  [![NPM Version][npm-image]][npm-url] 
+# dummydata  [![npm](https://img.shields.io/npm/v/dummydata.svg)](https://www.npmjs.com/package/dummydata) 
 A simple module for mongoDb to allow dummy data setup and teardown
-[npm-image]: https://img.shields.io/badge/dummydata-v0.1.3-green.svg
-[npm-url]: https://npmjs.org/package/dummydata
 
 ## Installation
 
