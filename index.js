@@ -30,7 +30,9 @@ function processData(db, data, cb){
 }
 
 function readTestData(cb){
-	var testDataDir = path.join( __dirname, defaults.datadir);
+	// var testDataDir = path.join( __dirname, defaults.datadir);
+	//var testDataDir = path.join(path.dirname(require.main.filename),defaults.datadir);
+	var testDataDir = path.join(process.cwd(), defaults.datadir);
 	reader(testDataDir, cb);
 }
 
