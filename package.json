@@ -1,6 +1,6 @@
 {
   "name": "dummydata",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "dummy data for anything",
   "main": "index.js",
   "scripts": {
